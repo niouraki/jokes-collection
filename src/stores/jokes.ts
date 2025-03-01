@@ -17,7 +17,12 @@ export const useJokesStore = defineStore('jokes', () => {
     try {
       isLoading.value = true;
       const response = await axios.get< Joke[] >('https://official-joke-api.appspot.com/random_ten')
-      jokes.value = response.data
+      if (jokes.value.length > 0) {
+        jokes.value.push(...response.data);
+      } else {
+        jokes.value = response.data
+      }
+
       isLoading.value = false
       console.log(response, 'response')
     } catch (error) {
