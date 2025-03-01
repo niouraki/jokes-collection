@@ -1,34 +1,32 @@
 <script setup lang="ts">
+import { ref, watch, computed } from 'vue'
 import {useJokesStore} from "@/stores/jokes.ts";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
+import JokesList from "@/components/JokesList.vue";
+import LoadingComponent from "@/components/LoadingComponent.vue";
 
 const store = useJokesStore();
+const toggleSwitch = ref<boolean>(false)
 
 store.getJokes()
 </script>
 
 <template>
   <main>
-    <h1>List of jokes</h1>
+    <h1 class="text-center text-3xl pb-4">List of jokes</h1>
 
-    <div class="grid grid-cols-4 gap-4">
-      <div
-        v-for="joke in store.jokes"
-        :key="joke.id"
-        class="rounded-md border-2 border-zinc-400/50 group h-40 [perspective:1000px] text-center"
-      >
-        <div class="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-<!--          front side of card-->
-          <div class="absolute inset-0 h-full w-full p-6 rounded-xl [backface-visibility:hidden]">
-            <h2>Joke type: {{joke.type}}</h2>
-            <p>{{joke.setup}}</p>
-          </div>
-<!--          back side of card-->
-          <div class="absolute inset-0 h-full w-full p-6 rounded-xl px-12 text-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
-            {{joke.punchline}}
-          </div>
-        </div>
+    <toggle-switch v-model="toggleSwitch">
+      <div>
+        <p class="font-medium">
+          Developer jokes
+        </p>
+        <p class="text-slate-500">
+          Toggle on to display only developer jokes
+        </p>
       </div>
-    </div>
+    </toggle-switch>
 
+    <jokes-list v-if="!store.isLoading" :toggle-switch="toggleSwitch"></jokes-list>
+    <loading-component v-else></loading-component>
   </main>
 </template>
