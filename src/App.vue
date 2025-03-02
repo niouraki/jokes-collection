@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import {useJokesStore} from "@/stores/jokes.ts";
+const store = useJokesStore();
+
+store.getJokes()
 </script>
 
 <template>

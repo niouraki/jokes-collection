@@ -8,9 +8,6 @@ import LoadingComponent from "@/components/LoadingComponent.vue";
 const store = useJokesStore();
 const toggleSwitch = ref<boolean>(false)
 
-if (store.jokes.length === 0)
-  store.getJokes()
-
 const calculateJokes = computed(() => {
   if (!toggleSwitch.value) {
     return store.jokes
