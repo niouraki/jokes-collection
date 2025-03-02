@@ -4,13 +4,17 @@ import axios from 'axios'
 import type {Joke} from "@/types.ts";
 
 export const useJokesStore = defineStore('jokes', () => {
-  const jokes = ref<Joke[]>([]);
-  const isLoading = ref<boolean>(false);
+  const jokes = ref<Joke[]>([])
+  const jokeCollection = ref<Joke[]>([])
+  const isLoading = ref<boolean>(false)
+  const showNotification = ref<boolean>(false)
 
   async function getJokes() {
     try {
       isLoading.value = true;
+      showNotification.value = false
       const response = await axios.get< Joke[] >('https://official-joke-api.appspot.com/random_ten')
+
       if (jokes.value.length > 0) {
         jokes.value.push(...response.data);
       } else {
@@ -20,10 +24,25 @@ export const useJokesStore = defineStore('jokes', () => {
       isLoading.value = false
       console.log(response, 'response')
     } catch (error) {
-      console.error(error);
       isLoading.value = false
+      showNotification.value = true
+
+      setTimeout(() => {
+        showNotification.value = false;
+      }, 3000)
     }
   }
 
-  return { jokes, getJokes, isLoading }
+  function saveJokeToCollection(currentJoke: Joke) {
+    // if joke already in collection remove it
+    if (jokeCollection.value.some(joke => joke.id === currentJoke.id)) {
+      jokeCollection.value = jokeCollection.value.filter(joke => joke.id !== currentJoke.id);
+
+      return
+    }
+
+    jokeCollection.value.push(currentJoke)
+  }
+
+  return { jokes, jokeCollection, getJokes, isLoading, saveJokeToCollection, showNotification }
 })

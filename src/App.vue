@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import {useJokesStore} from "@/stores/jokes.ts";
+import ToastNotification from "@/components/ToastNotification.vue";
 const store = useJokesStore();
 
 store.getJokes()
@@ -15,6 +16,7 @@ store.getJokes()
   </header>
 
   <RouterView />
+  <toast-notification v-show="store.showNotification" v-model="store.showNotification"></toast-notification>
 </template>
 
 <style scoped>
