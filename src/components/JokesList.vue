@@ -30,7 +30,7 @@ function calculateHeartFill(jokeId: number) {
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-4" v-if="jokes.length > 0">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="jokes.length > 0">
     <div
       v-for="joke in props.jokes"
       :key="joke.id"
