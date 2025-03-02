@@ -1,28 +1,21 @@
 <script setup lang="ts">
-import {useJokesStore} from "@/stores/jokes.ts";
-import {computed} from "vue";
-const store = useJokesStore();
+import { defineProps } from 'vue';
+import type {Joke} from "@/types.ts";
+import type { PropType } from 'vue';
 
 const props = defineProps({
-  toggleSwitch: {
-    type: Boolean,
+  jokes: {
+    type: Array as PropType<Joke[]>,
+    required: true,
   }
 })
 
-const calculateJokes = computed(() => {
-  if (!props.toggleSwitch) {
-    return store.jokes
-  } else {
-    return store.jokes.filter(joke => joke.type === 'programming')
-  }
-
-})
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-4" v-if="calculateJokes.length > 0">
+  <div class="grid grid-cols-4 gap-4" v-if="jokes.length > 0">
     <div
-      v-for="joke in calculateJokes"
+      v-for="joke in props.jokes"
       :key="joke.id"
       class="rounded-md border-2 border-zinc-400/50 group h-40 [perspective:1000px] text-center"
     >

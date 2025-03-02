@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import {computed, ref} from 'vue'
 import {useJokesStore} from "@/stores/jokes.ts";
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import JokesList from "@/components/JokesList.vue";
@@ -8,7 +8,16 @@ import LoadingComponent from "@/components/LoadingComponent.vue";
 const store = useJokesStore();
 const toggleSwitch = ref<boolean>(false)
 
-store.getJokes()
+if (store.jokes.length === 0)
+  store.getJokes()
+
+const calculateJokes = computed(() => {
+  if (!toggleSwitch.value) {
+    return store.jokes
+  } else {
+    return store.jokes.filter(joke => joke.type === 'programming')
+  }
+})
 </script>
 
 <template>
@@ -26,7 +35,7 @@ store.getJokes()
       </div>
     </toggle-switch>
 
-    <jokes-list v-if="!store.isLoading || (store.isLoading && store.jokes.length > 0)" :toggle-switch="toggleSwitch"></jokes-list>
+    <jokes-list v-if="!store.isLoading || (store.isLoading && store.jokes.length > 0)" :jokes="calculateJokes"></jokes-list>
     <loading-component v-else-if="store.isLoading && store.jokes.length === 0"></loading-component>
 
     <button

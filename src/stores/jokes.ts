@@ -1,13 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-
-interface Joke {
-  id: number;
-  type: string;
-  setup: string;
-  punchline: string;
-}
+import type {Joke} from "@/types.ts";
 
 export const useJokesStore = defineStore('jokes', () => {
   const jokes = ref<Joke[]>([]);
