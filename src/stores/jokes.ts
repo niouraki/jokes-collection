@@ -50,10 +50,29 @@ export const useJokesStore = defineStore('jokes', () => {
     setCollectionStorage()
   }
 
+  function saveStarRating(jokeId:number, rating: number) {
+    const joke = jokeCollection.value.find((joke) => joke.id === jokeId)
+
+    if (joke) {
+      joke.rating = rating
+      setCollectionStorage()
+    }
+  }
+
+  function getStarRating(jokeId:number) {
+    const joke = jokeCollection.value.find((joke) => joke.id === jokeId)
+
+    if (joke) {
+      return joke.rating
+    }
+
+    return null
+  }
+
   function setCollectionStorage() {
     // persist collection to local storage
     localStorage.setItem("jokeCollection", JSON.stringify(jokeCollection.value));
   }
 
-  return { jokes, jokeCollection, getJokes, isLoading, saveJokeToCollection, showNotification, removeJokeFromCollection }
+  return { jokes, jokeCollection, getJokes, isLoading, saveJokeToCollection, showNotification, removeJokeFromCollection, saveStarRating, getStarRating }
 })

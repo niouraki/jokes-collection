@@ -7,6 +7,7 @@ import {useJokesStore} from "@/stores/jokes.ts";
 import SaveIcon from "@/components/svg/SaveIcon.vue";
 import DeleteIcon from "@/components/svg/DeleteIcon.vue";
 import SingleJoke from "@/components/SingleJoke.vue";
+import StarIcon from "@/components/svg/StarIcon.vue";
 
 const store = useJokesStore();
 const route = useRoute()
@@ -36,9 +37,20 @@ function calculateHeartFill(jokeId: number) {
       :key="joke.id"
       class="rounded-md border-2 border-zinc-400/50 "
     >
-      <div class="flex justify-end pt-4 pr-4 cursor-pointer">
-        <save-icon v-if="route.name === 'home'" :heartFill="calculateHeartFill(joke.id)" @click="store.saveJokeToCollection(joke)"></save-icon>
-        <delete-icon v-else @click="store.removeJokeFromCollection(joke.id)"></delete-icon>
+      <div class="flex pt-4 px-4" :class="route.name === 'home' ? 'justify-end' : 'justify-between'">
+        <div v-if="route.name === 'collection'" class="flex cursor-pointer">
+          <star-icon
+            v-for="n in 5"
+            :key="n"
+            class="pr-1"
+            :fill="n <= (store.getStarRating(joke.id) ?? 0) ? '#FACC15' : 'none'"
+            @click="store.saveStarRating(joke.id, n)"
+          ></star-icon>
+        </div>
+        <div class="cursor-pointer">
+          <save-icon v-if="route.name === 'home'" :heartFill="calculateHeartFill(joke.id)" @click="store.saveJokeToCollection(joke)"></save-icon>
+          <delete-icon v-else @click="store.removeJokeFromCollection(joke.id)"></delete-icon>
+        </div>
       </div>
 
       <single-joke :joke="joke"></single-joke>
