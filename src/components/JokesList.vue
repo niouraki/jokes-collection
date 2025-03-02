@@ -33,5 +33,5 @@ const props = defineProps({
     </div>
   </div>
 
-  <div v-else>No jokes to show</div>
+  <div v-else class="text-center text-2xl py-12">No available programming jokes. Please load more jokes!</div>
 </template>
