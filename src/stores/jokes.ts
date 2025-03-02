@@ -22,7 +22,6 @@ export const useJokesStore = defineStore('jokes', () => {
       }
 
       isLoading.value = false
-      console.log(response, 'response')
     } catch (error) {
       isLoading.value = false
       showNotification.value = true
@@ -36,13 +35,16 @@ export const useJokesStore = defineStore('jokes', () => {
   function saveJokeToCollection(currentJoke: Joke) {
     // if joke already in collection remove it
     if (jokeCollection.value.some(joke => joke.id === currentJoke.id)) {
-      jokeCollection.value = jokeCollection.value.filter(joke => joke.id !== currentJoke.id);
-
+      removeJokeFromCollection(currentJoke.id)
       return
     }
 
     jokeCollection.value.push(currentJoke)
   }
 
-  return { jokes, jokeCollection, getJokes, isLoading, saveJokeToCollection, showNotification }
+  function removeJokeFromCollection(jokeId:number) {
+    jokeCollection.value = jokeCollection.value.filter(joke => joke.id !== jokeId);
+  }
+
+  return { jokes, jokeCollection, getJokes, isLoading, saveJokeToCollection, showNotification, removeJokeFromCollection }
 })

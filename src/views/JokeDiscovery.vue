@@ -32,7 +32,11 @@ const calculateJokes = computed(() => {
       </div>
     </toggle-switch>
 
-    <jokes-list v-if="!store.isLoading || (store.isLoading && store.jokes.length > 0)" :jokes="calculateJokes"></jokes-list>
+    <jokes-list
+      v-if="!store.isLoading || (store.isLoading && store.jokes.length > 0)"
+      :jokes="calculateJokes"
+      :empty-state="'No available jokes. Please load more!'"
+    ></jokes-list>
     <loading-component v-else-if="store.isLoading && store.jokes.length === 0"></loading-component>
 
     <button

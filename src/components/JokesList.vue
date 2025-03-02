@@ -14,6 +14,10 @@ const props = defineProps({
   jokes: {
     type: Array as PropType<Joke[]>,
     required: true,
+  },
+  emptyState: {
+    type: String,
+    required: true,
   }
 })
 
@@ -34,12 +38,12 @@ function calculateHeartFill(jokeId: number) {
     >
       <div class="flex justify-end pt-4 pr-4 cursor-pointer">
         <save-icon v-if="route.name === 'home'" :heartFill="calculateHeartFill(joke.id)" @click="store.saveJokeToCollection(joke)"></save-icon>
-        <delete-icon v-else></delete-icon>
+        <delete-icon v-else @click="store.removeJokeFromCollection(joke.id)"></delete-icon>
       </div>
 
       <single-joke :joke="joke"></single-joke>
     </div>
   </div>
 
-  <div v-else class="text-center text-2xl py-12">No available jokes. Please load more!</div>
+  <div v-else class="text-center text-2xl py-12">{{emptyState}}</div>
 </template>
