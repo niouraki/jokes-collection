@@ -5,6 +5,8 @@ import ToastNotification from "@/components/ToastNotification.vue";
 const store = useJokesStore();
 
 store.getJokes()
+store.jokeCollection = JSON.parse(localStorage.getItem("jokeCollection") || "[]")
+
 </script>
 
 <template>

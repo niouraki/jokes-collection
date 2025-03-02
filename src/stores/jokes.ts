@@ -40,10 +40,19 @@ export const useJokesStore = defineStore('jokes', () => {
     }
 
     jokeCollection.value.push(currentJoke)
+
+    setCollectionStorage()
   }
 
   function removeJokeFromCollection(jokeId:number) {
-    jokeCollection.value = jokeCollection.value.filter(joke => joke.id !== jokeId);
+    jokeCollection.value = jokeCollection.value.filter(joke => joke.id !== jokeId)
+
+    setCollectionStorage()
+  }
+
+  function setCollectionStorage() {
+    // persist collection to local storage
+    localStorage.setItem("jokeCollection", JSON.stringify(jokeCollection.value));
   }
 
   return { jokes, jokeCollection, getJokes, isLoading, saveJokeToCollection, showNotification, removeJokeFromCollection }
